@@ -12,4 +12,5 @@ def play():
     get_id = get['currentTrack']['id']
     get_time = get['progress']
     get_name = get['currentTrack']['name']
-    return [get_id, get_time, get_name]
+    get_singer = get['currentTrack']['ar'][0]['name']
+    return [get_id, get_time, get_name, get_singer]

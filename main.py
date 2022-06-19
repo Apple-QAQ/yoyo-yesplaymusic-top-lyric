@@ -1,4 +1,4 @@
-from api import yesplaymusic, dbus_pull
+from api import yesplaymusic  #, dbus_pull
 import os
 import time
 
@@ -28,10 +28,9 @@ def get_lyric():
             minute = tmp_time[0]
             time_sec = tmp_time[1].split(".")[0]
             music_time = [int(minute)] + [int(time_sec)]
-        except ValueError:
-            tmp_list = [[0, 0], "fuck u!"]
-            tmp_list[1] = line
-            music_time = tmp_list[0]  # 解决那些哈批写的歌词tnnd命名不规范
+        except:
+            tmp_list = [[0, 0], f"{_play[2]}-{_play[3]} | 无滚动歌词"]
+            music_time = tmp_list[0]  # 解决无滚动歌词
         lyric.update({str(music_time): tmp_list[1]})
 
 
@@ -46,8 +45,8 @@ while True:
     s = int(tmp_now_time - m * 60)
     now_time = [m, s]
     try:
-        dbus_pull.sendLyrics(lyric[f"{now_time}"])
-        # print(lyric[f"{now_time}"])  # test plugin
+        # dbus_pull.sendLyrics(lyric[f"{now_time}"])
+        print(lyric[f"{now_time}"])  # test plugin
     except KeyError:
         ...  # 等同于pass
     time.sleep(float(sleep_time))
