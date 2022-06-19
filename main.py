@@ -1,4 +1,4 @@
-from api import yesplaymusic  #, dbus_pull
+from api import yesplaymusic, dbus_pull
 import os
 import time
 
@@ -45,8 +45,8 @@ while True:
     s = int(tmp_now_time - m * 60)
     now_time = [m, s]
     try:
-        # dbus_pull.sendLyrics(lyric[f"{now_time}"])
-        print(lyric[f"{now_time}"])  # test plugin
+        dbus_pull.sendLyrics(lyric[f"{now_time}"])
+        # print(lyric[f"{now_time}"])  # test plugin
     except KeyError:
         ...  # 等同于pass
     time.sleep(float(sleep_time))
