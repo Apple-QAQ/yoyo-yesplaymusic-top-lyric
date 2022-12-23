@@ -44,18 +44,18 @@ class TimerThread(Thread, GenericMonitor):
         now_time = [m, s]
         try:
             text = self.lyric[f"{now_time}"]
-            self.textWidget.set_text(text)
+            self.textWidget.setText(text)
             print(self.lyric[f"{now_time}"])
         except KeyError:
             ...
         style = 'color:white'
 
-        self.textWidget.set_style(style)
+        self.textWidget.setStyle(style)
 
         self.notify(self.monitorGroup)
 
     def run(self):
-        self.setup_monitor()
+        self.setupMonitor()
         try:
             with open(os.path.dirname(os.path.abspath(__file__)) + "/yesplaymusic-toplyric.txt") as config:
                 sleep_time = config.read()
@@ -76,10 +76,10 @@ class TimerThread(Thread, GenericMonitor):
             self._displayLyricValue()
 
     def _forMe(self, sender):
-        return sender == self.monitorItem.get_full_name()
+        return sender == self.monitorItem.getFullName()
 
     def on_activate(self):
-        super().on_activate()
+        super().onActivate()
         self._displayLyricValue()
 
 
@@ -87,7 +87,7 @@ def signalHandler(signal_received, frame):
     timerThread.stop()
     timerThread.join()
     groups = ['Lyric']
-    timerThread.delete_groups(groups)
+    timerThread.deleteGroups(groups)
     sys.exit(0)
 
 
@@ -96,4 +96,4 @@ timerThread.start()
 
 signal(SIGINT, signalHandler)
 
-timerThread.run_main_loop()
+timerThread.runMainLoop()
