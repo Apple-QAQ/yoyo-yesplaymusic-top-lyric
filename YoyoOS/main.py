@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from api import yesplaymusic, dbus_pull
 import os
 import time
