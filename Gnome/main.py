@@ -6,7 +6,7 @@ import time
 from threading import Thread
 from signal import signal, SIGINT
 import sys
-from genericmonitor import *
+from generic_monitor import *
 
 
 class TimerThread(Thread, GenericMonitor):
