@@ -84,7 +84,7 @@ class TimerThread(Thread, GenericMonitor):
 
 
 def signalHandler(signal_received, frame):
-    timerThread.stop()
+    timerThread._stop()
     timerThread.join()
     groups = ['Lyric']
     timerThread.deleteGroups(groups)
