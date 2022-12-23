@@ -11,7 +11,7 @@ def play():
     try:
         get = requests.get("http://0.0.0.0:27232/player").json()
     except:
-        os._exit(0)
+        exit(0)
     get_current_track = get['currentTrack']
     get_id = get_current_track['id']
     get_time = get['progress']
