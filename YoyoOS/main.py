@@ -46,7 +46,7 @@ while True:
     s = int(tmp_now_time - m * 60)
     now_time = [m, s]
     try:
-        dbus_pull.sendLyrics(lyric[f"{now_time}"])
+        dbus_pull.send_lyrics(lyric[f"{now_time}"])
         # print(lyric[f"{now_time}"])  # test plugin
     except KeyError:
         ...  # 等同于pass

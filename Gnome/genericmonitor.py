@@ -17,8 +17,10 @@ import json
 import dbus
 from dbus.mainloop.glib import DBusGMainLoop
 import gi
+
 gi.require_version('Gst', '1.0')
 from gi.repository import GObject, GLib, Gst
+
 
 #
 # DBUS interface
@@ -28,9 +30,9 @@ class GenericMonitor:
     Class that manage DBUS communication with GNOME generic monitor addon.
     You have to subclass it
     """
-    
+
     def setupMonitor(self):
-        """ Setup DBUS stuff (equivalent to constructor) """ 
+        """ Setup DBUS stuff (equivalent to constructor) """
         self._activated = True
         self._encoder = json.JSONEncoder()
         self._dbus_interface = 'com.soutade.GenericMonitor'
@@ -40,20 +42,20 @@ class GenericMonitor:
 
         self.systray_proxy = self._dbus.get_object('org.gnome.Shell', '/com/soutade/GenericMonitor')
 
-        self.add_signal_receiver(self.onClick,         'onClick')
-        self.add_signal_receiver(self.onDblClick,      'onDblClick')
-        self.add_signal_receiver(self.onRightClick,    'onRightClick')
+        self.add_signal_receiver(self.onClick, 'onClick')
+        self.add_signal_receiver(self.onDblClick, 'onDblClick')
+        self.add_signal_receiver(self.onRightClick, 'onRightClick')
         self.add_signal_receiver(self.onRightDblClick, 'onRightDblClick')
-        self.add_signal_receiver(self.onScrollUp,      'onScrollUp')
-        self.add_signal_receiver(self.onScrollDown,    'onScrollDown')
-        self.add_signal_receiver(self.onEnter,         'onEnter')
-        self.add_signal_receiver(self.onLeave,         'onLeave')
+        self.add_signal_receiver(self.onScrollUp, 'onScrollUp')
+        self.add_signal_receiver(self.onScrollDown, 'onScrollDown')
+        self.add_signal_receiver(self.onEnter, 'onEnter')
+        self.add_signal_receiver(self.onLeave, 'onLeave')
 
-        self.add_signal_receiver(self.onActivate,      'onActivate')
-        self.add_signal_receiver(self.onDeactivate,    'onDeactivate')
+        self.add_signal_receiver(self.onActivate, 'onActivate')
+        self.add_signal_receiver(self.onDeactivate, 'onDeactivate')
 
     def runMainLoop(self):
-        """ Start infinite loop that allows to send and receive events and functions """ 
+        """ Start infinite loop that allows to send and receive events and functions """
         self._mainLoop = GLib.MainLoop()
         self._mainLoop.run()
 
@@ -63,7 +65,7 @@ class GenericMonitor:
 
     # Generic Monitor functions
     def notify(self, group):
-        """ Send notify() function 
+        """ Send notify() function
         Parameters
         ----------
         group : GenericMonitorGroup
@@ -75,63 +77,63 @@ class GenericMonitor:
             self.systray_proxy.notify(self._encoder.encode(group), dbus_interface=self._dbus_interface)
 
     def deleteItems(self, items):
-        """ Send deleteItems() function 
+        """ Send deleteItems() function
         Parameters
         ----------
         items : list of str (<itemName>@<groupName>)
             items to delete
         """
         if self._activated:
-            items = {'items':items}
+            items = {'items': items}
             self.systray_proxy.deleteItems(self._encoder.encode(items), dbus_interface=self._dbus_interface)
 
     def deleteGroups(self, groups):
-        """ Send deleteGroups() function 
+        """ Send deleteGroups() function
         Parameters
         ----------
         groups : list of str (<groupName>)
             groups to delete
         """
         if self._activated:
-            groups = {'groups':groups}
+            groups = {'groups': groups}
             self.systray_proxy.deleteGroups(self._encoder.encode(groups), dbus_interface=self._dbus_interface)
 
     def openPopup(self, item):
-        """ Send openPopup() function 
+        """ Send openPopup() function
         Parameters
         ----------
         item : str (<itemName>@<groupName>)
             Open popup (if there is one) of item
         """
         if self._activated:
-            item = {'item':item}
+            item = {'item': item}
             self.systray_proxy.openPopup(self._encoder.encode(item), dbus_interface=self._dbus_interface)
 
     def closePopup(self, item):
-        """ Send closePopup() function 
+        """ Send closePopup() function
         Parameters
         ----------
         item : str (<itemName>@<groupName>)
             Close popup (if there is one) of item
         """
         if self._activated:
-            item = {'item':item}
+            item = {'item': item}
             self.systray_proxy.closePopup(self._encoder.encode(item), dbus_interface=self._dbus_interface)
 
     def togglePopup(self, item):
-        """ Send togglePopup() function 
+        """ Send togglePopup() function
         Parameters
         ----------
         item : str (<itemName>@<groupName>)
             Toggle popup (if there is one) of item
         """
         if self._activated:
-            item = {'item':item}
+            item = {'item': item}
             self.systray_proxy.togglePopup(self._encoder.encode(item), dbus_interface=self._dbus_interface)
 
     # Generic Monitor signals
     def onClick(self, sender):
-        """ onClick event 
+        """ onClick event
         Parameters
         ----------
         sender : str (<itemName>@<groupName>)
@@ -140,16 +142,16 @@ class GenericMonitor:
         pass
 
     def onRightClick(self, sender):
-        """ onRightClick event 
+        """ onRightClick event
         Parameters
         ----------
         sender : str (<itemName>@<groupName>)
             Sender which event has been raised
         """
         pass
-    
+
     def onDblClick(self, sender):
-        """ onDblClick event 
+        """ onDblClick event
         Parameters
         ----------
         sender : str (<itemName>@<groupName>)
@@ -158,7 +160,7 @@ class GenericMonitor:
         pass
 
     def onRightDblClick(self, sender):
-        """ onRightDblClick event 
+        """ onRightDblClick event
         Parameters
         ----------
         sender : str (<itemName>@<groupName>)
@@ -185,16 +187,16 @@ class GenericMonitor:
         pass
 
     def onScrollUp(self, sender):
-        """ onScrollUp event 
+        """ onScrollUp event
         Parameters
         ----------
         sender : str (<itemName>@<groupName>)
             Sender which event has been raised
         """
         pass
-    
+
     def onScrollDown(self, sender):
-        """ onScrollDown event 
+        """ onScrollDown event
         Parameters
         ----------
         sender : str (<itemName>@<groupName>)
@@ -212,7 +214,7 @@ class GenericMonitor:
         """
         self._activated = False
 
-    # DBUS method
+        # DBUS method
         """ Add callback when DBUS signal is raised
         Parameters
         ----------
@@ -223,6 +225,7 @@ class GenericMonitor:
         interface : str
             Name of DBUS interface
         """
+
     def add_signal_receiver(self, callback, signalName, interface=None):
         if not interface:
             interface = self._dbus_interface
@@ -235,6 +238,7 @@ class GenericMonitor:
 class GenericMonitorGenericWidget:
     """ Generic widget class, parent of all widgets
     """
+
     def __init__(self, style='', name='', signals={}):
         """
         Parameters
@@ -250,7 +254,7 @@ class GenericMonitorGenericWidget:
         self.style = style
         self.name = name
         self.signals = signals
-        
+
     def setStyle(self, style):
         self.style = style
 
@@ -263,11 +267,13 @@ class GenericMonitorGenericWidget:
                 self.mapValues[p] = self.__dict__[p]
         for (name, value) in self.signals.items():
             self.mapValues[name] = value
-        return {self.mapName:self.mapValues}
+        return {self.mapName: self.mapValues}
+
 
 class GenericMonitorTextWidget(GenericMonitorGenericWidget):
     """ Text widget
     """
+
     def __init__(self, text, style='', name='', signals={}):
         """
         Parameters
@@ -289,10 +295,12 @@ class GenericMonitorTextWidget(GenericMonitorGenericWidget):
 
     def setText(self, text):
         self.text = text
-    
+
+
 class GenericMonitorIconWidget(GenericMonitorGenericWidget):
     """ Icon widget
     """
+
     def __init__(self, path, style=''):
         """
         Parameters
@@ -316,6 +324,7 @@ class GenericMonitorIconWidget(GenericMonitorGenericWidget):
 class GenericMonitorPictureWidget(GenericMonitorGenericWidget):
     """ Picture widget
     """
+
     def __init__(self, path, style='', width=-1, height=-1, name='', signals={}):
         """
         Parameters
@@ -341,19 +350,21 @@ class GenericMonitorPictureWidget(GenericMonitorGenericWidget):
 
         self.width = width
         self.height = height
-        
+
     def setPath(self, path):
         self.path = path
 
     def setWidth(self, width):
         self.width = width
-        
+
     def setHeight(self, height):
         self.height = height
+
 
 class GenericMonitorPopup(GenericMonitorGenericWidget):
     """ Popup of current item
     """
+
     def __init__(self, items):
         """
         Parameters
@@ -371,7 +382,7 @@ class GenericMonitorPopup(GenericMonitorGenericWidget):
         self.mapValues['items'] = []
         for item in self.items:
             self.mapValues['items'] += [item._toMap()]
-        return {self.mapName:self.mapValues}
+        return {self.mapName: self.mapValues}
 
     def clear(self):
         """ Clear items list
@@ -381,9 +392,11 @@ class GenericMonitorPopup(GenericMonitorGenericWidget):
     def setItems(self, items):
         self.items = items
 
+
 class GenericMonitorItem:
     """ Addon item that will be displayed in status bar
     """
+
     def __init__(self, name, items=[], signals={}, popup=None, box='center'):
         """
         Parameters
@@ -413,7 +426,7 @@ class GenericMonitorItem:
         self.popup = popup
         self.box = box
         self.group = ''
-        
+
         self._checkValues()
 
     def _checkValues(self):
@@ -423,7 +436,7 @@ class GenericMonitorItem:
             raise ValueError('Maximum 2 items can be displayed')
         for (name, value) in self.signals.items():
             if not name in ('on-click', 'on-dblclick', 'on-rightclick', 'on-rightdblclick',
-                            'on-enter', 'on-leave', 'on-scroll'): 
+                            'on-enter', 'on-leave', 'on-scroll'):
                 raise ValueError('Invalid signal name ' + name)
             if not value in ('signal', 'delete', 'open-popup', 'close-popup', 'toggle-popup'):
                 raise ValueError('Invalid signal value ' + value)
@@ -451,7 +464,7 @@ class GenericMonitorItem:
         """ return full name used by addon
         """
         return '%s@%s' % (self.name, self.group)
-    
+
     def _toMap(self):
         myMap = {}
         for p in ('name', 'box'):
@@ -467,9 +480,11 @@ class GenericMonitorItem:
             myMap[name] = value
         return [myMap]
 
+
 class GenericMonitorGroup:
     """ Group of items
     """
+
     def __init__(self, name, items=[]):
         """
         Parameters
@@ -512,11 +527,11 @@ class GenericMonitorGroup:
         for item in items:
             item.setGroup('')
         self.items = []
-        
+
     def getValues(self):
         """ Returns group and its items in addon format
         """
-        res = {'group': self.name, 'items':[]}
+        res = {'group': self.name, 'items': []}
         for item in self.items:
             res['items'] += item._toMap()
         return res
